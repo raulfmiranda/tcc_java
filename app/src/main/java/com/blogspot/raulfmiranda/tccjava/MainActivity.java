@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int CAMERA_PERMISSION_CODE = 100;
     private int CAMERA_REQUEST = 1888;
-    private int maxWidthHeight = 500;
+    private int maxWidthHeight = 590;
     private File arquivoFoto;
     private ProgressBar progressBar;
     private Button btnUploadPicture;
@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode == CAMERA_PERMISSION_CODE) {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Permissão da Câmera Permitida", Toast.LENGTH_SHORT).show();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 arquivoFoto = new File(geraCaminhoFoto());
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
@@ -216,8 +215,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
-        Bitmap img = image;
+    private Bitmap resizeBitmap(Bitmap img, int maxWidth, int maxHeight) {
+
+        // Verticalizar a foto
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+        img = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+
         if (maxHeight > 0 && maxWidth > 0) {
             int width = img.getWidth();
             int height = img.getHeight();
@@ -233,9 +237,8 @@ public class MainActivity extends AppCompatActivity {
             }
             img = Bitmap.createScaledBitmap(img, finalWidth, finalHeight, true);
             return img;
-        } else {
-            return img;
         }
+        return img;
     }
 
     private void setVisibleAll() {
