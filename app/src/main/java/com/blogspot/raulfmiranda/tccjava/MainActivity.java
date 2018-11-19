@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
         if(arquivoFoto != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(arquivoFoto.getAbsolutePath());
             if(bitmap != null) {
-                Bitmap bitmapConsultaReduzido = resizeBitmap(bitmap, maxWidthHeight, maxWidthHeight);
-                imgFoto.setImageBitmap(bitmapConsultaReduzido);
+                Bitmap bitmapReduzido = resizeBitmap(bitmap, maxWidthHeight, maxWidthHeight);
+                imgFoto.setImageBitmap(bitmapReduzido);
                 imgFoto.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgFoto.setTag(arquivoFoto.getAbsolutePath());
             }
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void bitmapToFile(Bitmap bmp) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bmp.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        bmp.compress(CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
         byte[] bitmapdata = bos.toByteArray();
 
         //write the bytes in file
